@@ -1,17 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { TriviaService } from '../core/services/trivia.service';
+import { Component,  } from '@angular/core';
+import { FormBuilder,  FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Category } from '@shared/interfaces/category.interface';
+import { Observable } from 'rxjs';
+import { TriviaService } from '@core/services/trivia.service';
 
 @Component({
   selector: 'app-setup',
   templateUrl: './setup.component.html',
   styleUrls: ['./setup.component.scss']
 })
-export class SetupComponent implements OnInit {
+export class SetupComponent {
+  setupForm: FormGroup;
+  categories$: Observable<Category> = this.triviaService.getCategories();
 
-  constructor(private triviaService: TriviaService) { }
+  constructor(private triviaService: TriviaService, private router: Router,
+              private fb: FormBuilder) {
+  this.initForm();
+ }
 
-  ngOnInit(): void {
-    // this.triviaService.getCategories().subscribe();
+  goToTrivia(): void {
+    console.log('Funciona!');
+    console.log(this.setupForm.value);
+    this.router.navigate(['/trivia']);
   }
 
+  private initForm(): void {
+       this.setupForm = this.fb.group({
+         category: ['', [Validators.required]],
+         difficulty: ['', [Validators.required]],
+       });
+  }
 }

@@ -1,24 +1,33 @@
 <ion-card>
   <ion-card-header>
-    <ion-card-title>PON A PRUEBA TU CONOCIMIENTO</ion-card-title>
-    <ion-card-subtitle>Configurar trivia</ion-card-subtitle>
+    <ion-card-title class="uppercase-text">Test your knowledge:</ion-card-title>
+    <!-- <ion-card-subtitle>Configurar trivia</ion-card-subtitle> -->
   </ion-card-header>
 
-  <ion-card-content>
-    <ion-item>
-      <ion-label>Choose Categories</ion-label>
-      <ion-select placeholder="Select One" interface="popover">
-        <ion-select-option value="f">Female</ion-select-option>
-        <ion-select-option value="m">Male</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label>Choose Difficulties</ion-label>
-      <ion-select placeholder="Select One" interface="action-sheet">
-        <ion-select-option value="e">Easy</ion-select-option>
-        <ion-select-option value="m">Medium</ion-select-option>
-        <ion-select-option value="h">Hard</ion-select-option>
-      </ion-select>
-    </ion-item>
-  </ion-card-content>
+  <form [formGroup]="setupForm" (ngSubmit)="goToTrivia()">
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Choose Categories</ion-label>
+        <ion-select placeholder="Select One" interface="popover" formControlName="category">
+          <ion-select-option [value]="category.id" *ngFor="let category of (categories$ | async)?.trivia_categories">
+            {{ category.name }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Choose Difficulty</ion-label>
+        <ion-select placeholder="Select One" interface="popover" formControlName="difficulty">
+          <ion-select-option value="easy">Easy</ion-select-option>
+          <ion-select-option value="medium">Medium</ion-select-option>
+          <ion-select-option value="hard">Hard</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item-divider></ion-item-divider>
+      <ion-button type="submit" expand="full" [disabled]="!setupForm.valid">Iniciar Trivia</ion-button>
+      <ion-item>
+        <ion-label> Al pulsar iniciar, tendrás 10 segundos por pregunta.</ion-label>
+      </ion-item>
+    </ion-card-content>
+  </form>
 </ion-card>
