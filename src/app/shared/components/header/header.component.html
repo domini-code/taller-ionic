@@ -1,8 +1,11 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar>
     <ion-buttons slot="primary">
-      <ion-button>
-        <ion-icon slot="icon-only" name="person-circle"></ion-icon>
+      <ion-button (click)="toggleDark()">
+        <ion-icon *ngIf="!isDark; else onLight" slot="icon-only" name="moon-outline"></ion-icon>
+        <ng-template #onLight>
+          <ion-icon slot="icon-only" name="sunny-outline"></ion-icon>
+        </ng-template>
       </ion-button>
     </ion-buttons>
     <ion-title>TrivialAPP</ion-title>
