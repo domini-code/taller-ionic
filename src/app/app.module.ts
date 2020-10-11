@@ -10,19 +10,16 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { CoreModule } from './core/core.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [AppComponent],
-  entryComponents: [],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     CoreModule,
     SharedModule,
-
   ],
   providers: [
     StatusBar,

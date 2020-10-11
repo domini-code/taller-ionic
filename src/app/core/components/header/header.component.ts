@@ -15,14 +15,9 @@ export class HeaderComponent {
     this.isDark = !this.prefersDark.matches;
   }
 
-  checkToggle(shouldCheck: boolean) {
-    this.isDark = shouldCheck;
-  }
-
   toggleDark() {
     this.isDark = !this.isDark;
     document.body.classList.toggle('dark', this.isDark);
-    console.log(this.isDark);
   }
 
 }
