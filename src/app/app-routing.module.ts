@@ -14,6 +14,15 @@ const routes: Routes = [
     path: 'result',
     loadChildren: () => import('./result/result.module').then(m => m.ResultModule)
   },
+  {
+    path: 'reset',
+    loadChildren: () => import('./reset/reset.module').then(m => m.ResetModule)
+  },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({
