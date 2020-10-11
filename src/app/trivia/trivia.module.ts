@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TriviaRoutingModule } from './trivia-routing.module';
+import { SharedModule } from '@shared/shared.module';
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import { TriviaRoutingModule } from './trivia-routing.module';
   ],
   imports: [
     CommonModule,
-    TriviaRoutingModule
+    TriviaRoutingModule,
+    SharedModule
   ]
 })
 export class TriviaModule { }
