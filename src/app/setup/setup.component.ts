@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TriviaService } from '../core/services/trivia.service';
 
 @Component({
   selector: 'app-setup',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SetupComponent implements OnInit {
 
-  constructor() { }
+  constructor(private triviaService: TriviaService) { }
 
   ngOnInit(): void {
+    // this.triviaService.getCategories().subscribe();
   }
 
 }
