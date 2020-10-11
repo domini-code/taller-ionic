@@ -9,7 +9,7 @@
       <ion-item>
         <ion-label>Choose Categories</ion-label>
         <ion-select placeholder="Select One" interface="popover" formControlName="category">
-          <ion-select-option [value]="category.id" *ngFor="let category of (categories$ | async)?.trivia_categories">
+          <ion-select-option [value]="category.id" *ngFor="let category of (categories$ | async)">
             {{ category.name }}</ion-select-option
           >
         </ion-select>
@@ -23,7 +23,7 @@
           <ion-select-option value="hard">Hard</ion-select-option>
         </ion-select>
       </ion-item>
-      <ion-item-divider></ion-item-divider>
+      <!-- <ion-item-divider></ion-item-divider> -->
       <ion-button type="submit" expand="full" [disabled]="!setupForm.valid">Iniciar Trivia</ion-button>
       <ion-item>
         <ion-label> Al pulsar iniciar, tendrás 10 segundos por pregunta.</ion-label>
