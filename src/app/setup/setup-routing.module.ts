@@ -9,4 +9,6 @@ const routes: Routes = [{ path: '', component: SetupComponent }];
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SetupRoutingModule { }
+export class SetupRoutingModule {
+  static components = [ SetupComponent ];
+}

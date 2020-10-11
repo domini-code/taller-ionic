@@ -9,4 +9,6 @@ const routes: Routes = [{ path: '', component: TriviaComponent }];
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TriviaRoutingModule { }
+export class TriviaRoutingModule {
+  static components = [ TriviaComponent ];
+}
