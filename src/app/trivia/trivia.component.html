@@ -1,13 +1,41 @@
-<app-body-card title="PREGUNTA 1 / 5">
-  <p>trivia works!</p>
-  <pre>
-    Dificultad: MEDIUM
-    Categoría: ENTERTAINMENT: MUSICALS & THEATRES
-    Tiempo restante: 00:00:04
-    When was the play "Macbeth" written?
-    1628
-    1606
-  </pre>
-
+<app-body-card *ngIf="!loading; else onLoading" title="PREGUNTA 1 / 5">
+  <ion-list>
+    <ion-item>
+      <ion-label>Dificultad:</ion-label>
+      <ion-label slot="end">
+        <strong class="text-uppercase">{{ config.difficulty }}</strong></ion-label
+      >
+    </ion-item>
+    <ion-item>
+      <ion-label>Categoría:</ion-label>
+      <ion-label slot="end" class="ion-text-wrap">
+        <strong>{{ config.category }}</strong></ion-label
+      >
+    </ion-item>
+    <ion-item>
+      <ion-label>Tiempo restante:</ion-label>
+      <ion-label slot="end"> <strong>00:00:04</strong></ion-label>
+    </ion-item>
+  </ion-list>
+  <!-- sub-card -->
+  <ion-card class="sub-card">
+    <ion-card-header>
+      <ion-card-title class="ion-text-center ion-text-wrap"
+        >What five letter word is the motto of the IBM Computer company?</ion-card-title
+      >
+    </ion-card-header>
+    <ion-card-content>
+      <section>
+        <ion-button color="secondary" expand="block">CLICK</ion-button>
+        <ion-button color="secondary" expand="block">PIXEL</ion-button>
+        <ion-button color="secondary" expand="block">THINK</ion-button>
+        <ion-button color="secondary" expand="block">LOGIN</ion-button>
+      </section>
+    </ion-card-content>
+  </ion-card>
+  <!-- sub-card -->
 </app-body-card>
 
+<ng-template #onLoading>
+  <app-body-card title="loading"> loading... </app-body-card>
+</ng-template>
