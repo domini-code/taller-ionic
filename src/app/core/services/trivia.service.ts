@@ -57,6 +57,7 @@ export class TriviaService {
     this.token = this.localStorageSvc.getInfo('token') as string;
     if (!this.token) {
       this.getNewToken().subscribe((data) => {
+        this.token = data;
         this.localStorageSvc.saveInfo('token', data);
       });
     }
