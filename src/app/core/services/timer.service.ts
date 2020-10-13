@@ -9,7 +9,7 @@ export interface IClock {
 }
 
 @Injectable()
-export class ClockService {
+export class TimerService {
 
   private state = new BehaviorSubject<IClock>({
     seconds: 0,
@@ -30,7 +30,6 @@ export class ClockService {
     if (value < 0 ) value = 0;
     update[command] = value;
     update.totalTime = this.convertToSeconds(update);
-
     this.state.next(update);
   }
 

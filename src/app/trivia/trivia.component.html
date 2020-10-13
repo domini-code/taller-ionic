@@ -15,7 +15,12 @@
       <ion-label>Tiempo restante:</ion-label>
       <ion-label slot="end">
         <strong>
-          <app-count-down timeInSeconds="10"></app-count-down>
+          <app-count-down
+            [start]="startTimer$.asObservable()"
+            [pause]="pauseTimer$.asObservable()"
+            [reset]="resetTimer$.asObservable()"
+            timeInSec=10>
+          </app-count-down>
         </strong>
       </ion-label>
     </ion-item>

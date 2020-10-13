@@ -1,3 +1,7 @@
-<ng-container>
-  {{ timeInMs | secondsToTimeFormat }}
+<ng-container *ngIf="clock$ | async as clock; else default">
+  {{ clock | secondsToTimeFormat}}
 </ng-container>
+
+<ng-template #default>
+  {{ timeInSec | secondsToTimeFormat}}
+</ng-template>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocalStorageService } from '@core/services/localstorage.service';
 import { TriviaService } from '@core/services/trivia.service';
 import { Trivia } from '@shared/interfaces';
+import { BehaviorSubject, of, Subject } from 'rxjs';
 
 interface Config {
   difficulty: string;
@@ -19,6 +19,10 @@ export class TriviaComponent implements OnInit {
   trivia: Trivia[];
   loading = false;
 
+  startTimer$: Subject<void> = new Subject();
+  pauseTimer$: Subject<void> = new Subject();
+  resetTimer$: Subject<void> = new Subject();
+
   constructor(
     private router: Router,
     private triviaSrv: TriviaService
@@ -30,12 +34,13 @@ export class TriviaComponent implements OnInit {
       this.config = { // Eliminar luego.
         category: 1,
         difficulty: 'easy'
-      }
+      };
     }
     this.createTrivia();
   }
 
   ngOnInit(): void {
+    this.startTimer();
   }
 
   createTrivia() {
@@ -46,6 +51,16 @@ export class TriviaComponent implements OnInit {
         this.trivia = trivia;
         this.loading = false;
       });
+  }
+
+  startTimer() {
+    this.startTimer$.next();
+  }
+  pauseTimer() {
+    this.pauseTimer$.next();
+  }
+  resetTimer() {
+    this.resetTimer$.next();
   }
 
 }
