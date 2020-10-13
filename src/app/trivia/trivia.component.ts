@@ -26,7 +26,11 @@ export class TriviaComponent implements OnInit {
     this.loading = true;
     this.config = this.router.getCurrentNavigation().extras.state?.config as Config;
     if (!this.config) {
-      this.router.navigate(['/']);
+      // this.router.navigate(['/']); // Descomentar luego
+      this.config = { // Eliminar luego.
+        category: 1,
+        difficulty: 'easy'
+      }
     }
     this.createTrivia();
   }

@@ -8,8 +8,7 @@ import {
   TriviaCategoriesResponse,
   RequestTokenResponse,
   TriviaResponse,
-  Trivia,
-  Config,
+  Trivia
 } from '@shared/interfaces';
 import { pluck, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';

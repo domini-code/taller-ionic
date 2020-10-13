@@ -2,15 +2,10 @@ import { TriviaCategory } from '@shared/interfaces/category.interface';
 import { Injectable } from '@angular/core';
 import { Config } from '@shared/interfaces';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class LocalStorageService {
 
   saveInfo(key: string, value: string |object): void {
-    // const config = {
-    //   mode: 'dark'
-    // };
     localStorage.setItem(key, JSON.stringify(value));
   }
 
