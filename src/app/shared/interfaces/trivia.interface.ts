@@ -5,6 +5,7 @@ export interface Trivia {
   question: string;
   correct_answer: string;
   incorrect_answers: string[];
+  randomAnswers?: string[];
 }
 
 export interface TriviaResponse {
