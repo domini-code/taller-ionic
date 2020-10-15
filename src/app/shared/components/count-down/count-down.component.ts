@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TimerService } from '@core/services/timer.service';
 import { interval, merge, Observable, of, Subject } from 'rxjs';
-import { mapTo, scan, switchMap } from 'rxjs/operators';
+import { mapTo, scan, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-count-down',
@@ -14,12 +14,17 @@ export class CountDownComponent implements OnInit, AfterViewInit  {
   @Input() start: Observable<void>;
   @Input() pause: Observable<void>;
   @Input() reset: Observable<void>;
+  @Output() time = new EventEmitter<number>();
 
   clock$: Observable<number>;
 
   constructor(
     private clockService: TimerService
   ) { }
+
+  shareCurrentTime(time: number) {
+    this.time.emit(time);
+  }
 
   ngOnInit() {
     this.clockService.updateState(+this.timeInSec, 'seconds');
@@ -52,6 +57,11 @@ export class CountDownComponent implements OnInit, AfterViewInit  {
             return this.clockService.getTotalSeconds();
           return --accummulated;
         }),
+        tap(num => {
+          if (num !== 0 || num !== null) {
+            this.shareCurrentTime(num);
+          }
+        })
       );
   }
 }

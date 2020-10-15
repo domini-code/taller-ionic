@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TriviaService } from '@core/services/trivia.service';
 import shuffleArray from '@shared/helpers/shuffle-array.helper';
@@ -66,34 +66,47 @@ const mockTriviaData = [
   templateUrl: './trivia.component.html',
   styleUrls: ['./trivia.component.scss']
 })
-export class TriviaComponent implements OnInit, AfterViewChecked {
-  config: Config;
-  trivia: Trivia[] = mockTriviaData;
-  loading = false;
-
-  startTimer$: Subject<void> = new Subject();
-  pauseTimer$: Subject<void> = new Subject();
-  resetTimer$: Subject<void> = new Subject();
-
+export class TriviaComponent implements OnInit {
   private _counter = 0;
   get counter() {
     return this._counter;
   }
   set counter(value: number) {
     if (this.counter >= 4) {
-      console.log('No hay mas preguntas');
+      // 'No hay mas preguntas'
+      console.log(`
+        Has terminado el juego en ${this.takenTime}
+        Con un ascierto de ${this.goodAnswer}/5 respuestas correctas.
+
+        GAME OVER!
+      `);
+      this.gameOver = true;
+      return;
     } else {
       this._counter = value;
     } 
   }
 
+  initialTime = 10;
+  currentTime: number;
+  takenTime = 0;
+  config: Config;
+  trivia: Trivia[] = mockTriviaData; // TODO: Quitar inicializacion al terminar el dev.
   selectedQuestion = this.trivia[this.counter];
+  goodAnswer = 0;
+  loading = false;
+  gameOver = false;
+  
+  startTimer$: Subject<void> = new Subject();
+  pauseTimer$: Subject<void> = new Subject();
+  resetTimer$: Subject<void> = new Subject();
+  
 
   constructor(
     private router: Router,
     private triviaSrv: TriviaService
   ) {
-    this.loading = false; // TODO: uncomment when dev finished
+    // this.loading = true; // TODO: uncomment when dev finished
     this.config = this.router.getCurrentNavigation().extras.state?.config as Config;
     if (!this.config) {
       // this.router.navigate(['/']); // TODO: uncomment when dev finished
@@ -104,9 +117,19 @@ export class TriviaComponent implements OnInit, AfterViewChecked {
     }
     // this.createTrivia(); // TODO: uncomment when dev finished
   }
+    
+  ngOnInit(): void {
+    this.setupRandomQuestions();
+    this.startTimer();
+  }
 
+  getTime(event: number) {
+    this.currentTime = event;
+  }
   startTimer() {
-    this.startTimer$.next();
+    setTimeout(() => { // Se usa el setTimeout
+      this.startTimer$.next();
+    }, 0);
   }
   pauseTimer() {
     this.pauseTimer$.next();
@@ -116,17 +139,30 @@ export class TriviaComponent implements OnInit, AfterViewChecked {
   }
 
   selectedAnswer(answer: string) {
-    if (answer === this.selectedQuestion.correct_answer) {
-      console.log('Has atinado con la correcta');
-    } else {
-      console.log('Has elegido mal');
+    this.pauseTimer();
+    if (this.gameOver) {
+      return;
     }
+    const { correct_answer } = this.selectedQuestion;
+    if (answer === correct_answer) {
+      this.goodAnswer++;
+    } else {
+      // Ha fallado la respuseta...
+    }
+    this.takenTime += (this.initialTime - this.currentTime);
+    
+    if (!this.gameOver) {
+      this.resetTimer();
+      this.nextQuestion();
+      this.startTimer();
+      return;
+    }
+  }
+
+  nextQuestion() {
     this.counter++;
     this.selectedQuestion = this.trivia[this.counter];
     this.setupRandomQuestions();
-    
-    this.resetTimer();
-    this.startTimer();
   }
 
   setupRandomQuestions() {
@@ -143,12 +179,6 @@ export class TriviaComponent implements OnInit, AfterViewChecked {
         this.loading = false;
       });
   }
-  
-  ngOnInit(): void {
-    this.setupRandomQuestions();
-  }
-  
-  ngAfterViewChecked() {
-    this.startTimer();
-  }
+
+
 }

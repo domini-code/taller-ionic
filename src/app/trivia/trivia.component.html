@@ -16,11 +16,16 @@
       <ion-label slot="end">
         <strong>
           <app-count-down
+            *ngIf="!gameOver; else onGameOver"
+            (time)="getTime($event)"
             [start]="startTimer$.asObservable()"
             [pause]="pauseTimer$.asObservable()"
             [reset]="resetTimer$.asObservable()"
-            timeInSec=10>
+            [timeInSec]="initialTime">
           </app-count-down>
+          <ng-template #onGameOver>
+            GAME OVER
+          </ng-template>
         </strong>
       </ion-label>
     </ion-item>
@@ -32,7 +37,7 @@
     </ion-card-header>
     <ion-card-content>
       <section *ngFor="let answer of selectedQuestion.randomAnswers; index as i">
-        <ion-button (click)="selectedAnswer(answer)" color="secondary" expand="block">{{ answer }}</ion-button>
+        <ion-button (click)="selectedAnswer(answer)" color="secondary" expand="block" [innerHTML]="answer"></ion-button>
       </section>
     </ion-card-content>
   </ion-card>
