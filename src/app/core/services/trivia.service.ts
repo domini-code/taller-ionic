@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
 export class TriviaService {
   token: string;
   constructor(private http: HttpClient, private localStorageSvc: LocalStorageService) {
-    this.checkToken();
+    // this.checkToken(); // FIXME: Fails after one day with no use. We need to recreate it if older than few hours. 
   }
 
   getCategories(): Observable<TriviaCategory[]> {
@@ -33,7 +33,7 @@ export class TriviaService {
         category: categoryId.toString(),
         amount: '5',
         type: 'multiple',
-        token: this.token
+        // token: this.token
       },
     });
     return this.http
@@ -58,6 +58,7 @@ export class TriviaService {
     if (!this.token) {
       this.getNewToken().subscribe((data) => {
         this.token = data;
+        console.log(data);
         this.localStorageSvc.saveInfo('token', data);
       });
     }

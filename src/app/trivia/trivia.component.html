@@ -9,7 +9,7 @@
     <ion-item>
       <ion-label>Category:</ion-label>
       <ion-label slot="end" class="ion-text-wrap">
-        <strong>{{ trivia[0].category }}</strong></ion-label>
+        <strong>{{ trivia[0]?.category }}</strong></ion-label>
     </ion-item>
     <ion-item>
       <ion-label>Remain time:</ion-label>
@@ -33,10 +33,10 @@
   <!-- sub-card -->
   <ion-card class="sub-card">
     <ion-card-header>
-      <ion-card-title class="ion-text-center ion-text-wrap" [innerHTML]="selectedQuestion.question"></ion-card-title>
+      <ion-card-title class="ion-text-center ion-text-wrap" [innerHTML]="selectedQuestion?.question"></ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <section *ngFor="let answer of selectedQuestion.randomAnswers; index as i">
+      <section *ngFor="let answer of selectedQuestion?.randomAnswers; index as i">
         <ion-button (click)="selectedAnswer(answer)" color="secondary" expand="block" [innerHTML]="answer"></ion-button>
       </section>
     </ion-card-content>

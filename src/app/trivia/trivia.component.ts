@@ -4,62 +4,12 @@ import { TriviaService } from '@core/services/trivia.service';
 import shuffleArray from '@shared/helpers/shuffle-array.helper';
 import { Trivia } from '@shared/interfaces';
 import { Subject } from 'rxjs';
+import { mockTriviaData } from './trivia.mock';
 
 interface Config {
   difficulty: string;
   category: number;
 }
-
-const mockTriviaData = [
-  {
-    category: 'Entertainment: Music',
-    type: 'multiple',
-    difficulty: 'medium',
-    question:
-      'Which band released songs such as &quot;Electric Feel&quot;, &quot;Kids&quot;, and &quot;Time to Pretend&quot;?',
-    correct_answer: 'MGMT',
-    incorrect_answers: ['Passion Pit', 'Phoenix', 'Franz Ferdinand'],
-  },
-  {
-    category: 'Entertainment: Music',
-    type: 'multiple',
-    difficulty: 'medium',
-    question:
-      'Which one of these rappers is NOT a member of the rap group Wu-Tang Clan?',
-    correct_answer: 'Dr.Dre',
-    incorrect_answers: ['Ol&#039; Dirty Bastard', 'GZA', 'Method Man'],
-  },
-  {
-    category: 'Entertainment: Music',
-    type: 'multiple',
-    difficulty: 'medium',
-    question:
-      'What date is referenced in the 1971 song &quot;September&quot; by Earth, Wind &amp; Fire?',
-    correct_answer: '21st of September',
-    incorrect_answers: [
-      '26th of September',
-      '23rd of September',
-      '24th of September',
-    ],
-  },
-  {
-    category: 'Entertainment: Music',
-    type: 'multiple',
-    difficulty: 'medium',
-    question: 'Which genre of Hip Hop does MC Frontalot rap?',
-    correct_answer: 'Nerdcore',
-    incorrect_answers: ['Horrorcore', 'Christian', 'Crunk'],
-  },
-  {
-    category: 'Entertainment: Music',
-    type: 'multiple',
-    difficulty: 'medium',
-    question:
-      'The Proclaimers - I&#039;m Gonna Be (500 Miles) reached what position on the US Hot 100 Charts in 1993?',
-    correct_answer: '3rd',
-    incorrect_answers: ['8th', '1st', '5th'],
-  },
-];
 
 @Component({
   selector: 'app-trivia',
@@ -81,6 +31,15 @@ export class TriviaComponent implements OnInit {
         GAME OVER!
       `);
       this.gameOver = true;
+      this.router.navigate(['/result', {
+        state: {
+          takenTime: this.takenTime,
+          correctAnswers: this.goodAnswer,
+          category: this.config.category,
+          difficulty: this.config.difficulty
+
+        }
+      }]);
       return;
     } else {
       this._counter = value;
@@ -91,11 +50,11 @@ export class TriviaComponent implements OnInit {
   currentTime: number;
   takenTime = 0;
   config: Config;
-  trivia: Trivia[] = mockTriviaData; // TODO: Quitar inicializacion al terminar el dev.
-  selectedQuestion = this.trivia[this.counter];
+  trivia: Trivia[] = [];
   goodAnswer = 0;
-  loading = false;
+  loading = true;
   gameOver = false;
+  selectedQuestion: Trivia;
   
   startTimer$: Subject<void> = new Subject();
   pauseTimer$: Subject<void> = new Subject();
@@ -106,28 +65,34 @@ export class TriviaComponent implements OnInit {
     private router: Router,
     private triviaSrv: TriviaService
   ) {
-    // this.loading = true; // TODO: uncomment when dev finished
+    this.loading = true;
     this.config = this.router.getCurrentNavigation().extras.state?.config as Config;
     if (!this.config) {
-      // this.router.navigate(['/']); // TODO: uncomment when dev finished
-      this.config = { // TODO: Eliminar luego.
-        category: 1,
-        difficulty: 'easy'
-      };
+      this.router.navigate(['/']);
     }
-    // this.createTrivia(); // TODO: uncomment when dev finished
+    this.createTrivia();
   }
-    
-  ngOnInit(): void {
-    this.setupRandomQuestions();
-    this.startTimer();
+  
+  ngOnInit(): void { }
+
+  createTrivia() {
+    const { difficulty, category } = this.config;
+    this.loading = true;
+    this.triviaSrv.getTrivias(difficulty, category)
+      .subscribe(trivia => {
+        this.trivia = trivia;
+        this.selectedQuestion = trivia[0];
+        this.setupRandomQuestions();
+        this.startTimer();   
+        this.loading = false;
+      });
   }
 
   getTime(event: number) {
     this.currentTime = event;
   }
   startTimer() {
-    setTimeout(() => { // Se usa el setTimeout
+    setTimeout(() => { // Se usa el setTimeout para que el observable inicia antes.
       this.startTimer$.next();
     }, 0);
   }
@@ -143,11 +108,10 @@ export class TriviaComponent implements OnInit {
     if (this.gameOver) {
       return;
     }
-    const { correct_answer } = this.selectedQuestion;
-    if (answer === correct_answer) {
+    if (answer === this.selectedQuestion.correct_answer) {
       this.goodAnswer++;
     } else {
-      // Ha fallado la respuseta...
+      // Ha fallado la respuesta...
     }
     this.takenTime += (this.initialTime - this.currentTime);
     
@@ -167,18 +131,13 @@ export class TriviaComponent implements OnInit {
 
   setupRandomQuestions() {
     const {correct_answer, incorrect_answers} = this.selectedQuestion;
-    this.selectedQuestion.randomAnswers = shuffleArray([correct_answer, ...incorrect_answers]);
+    this.selectedQuestion.randomAnswers = shuffleArray([
+      correct_answer,
+      ...incorrect_answers
+    ]);
   }
 
-  createTrivia() {
-    const { difficulty, category } = this.config;
-    this.loading = true;
-    this.triviaSrv.getTrivias(difficulty, category)
-      .subscribe(trivia => {
-        this.trivia = trivia;
-        this.loading = false;
-      });
-  }
+  
 
 
 }
