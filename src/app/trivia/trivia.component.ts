@@ -30,17 +30,14 @@ export class TriviaComponent implements OnInit {
 
         GAME OVER!
       `);
+      const state = {
+        takenTime: this.takenTime,
+        correctAnswers: this.goodAnswer,
+        category: this.config.category,
+        difficulty: this.config.difficulty
+      };
       this.gameOver = true;
-      this.router.navigate(['/result', {
-        state: {
-          takenTime: this.takenTime,
-          correctAnswers: this.goodAnswer,
-          category: this.config.category,
-          difficulty: this.config.difficulty
-
-        }
-      }]);
-      return;
+      this.router.navigate(['/result'], { state });
     } else {
       this._counter = value;
     } 

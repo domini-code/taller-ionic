@@ -1,5 +1,9 @@
 <app-body-card title="¡Has terminado!">
-  <p>result works!</p>
   <h1>Has logrado un 0 de 5</h1>
   <ion-button (click)="goToSetup()">Generar nueva trivia</ion-button>
+
+  <br>
+  <pre>
+    {{ data | json }}
+  </pre>
 </app-body-card>

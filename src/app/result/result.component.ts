@@ -13,6 +13,9 @@ export class ResultComponent implements OnInit {
     private router: Router,
   ) {
     this.data = this.router.getCurrentNavigation().extras.state;
+    if (!this.data) {
+      this.router.navigate(['/']);
+    }
   }
   
   ngOnInit(): void {
