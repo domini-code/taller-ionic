@@ -18,9 +18,6 @@
           <app-count-down
             *ngIf="!gameOver; else onGameOver"
             (time)="getTime($event)"
-            [start]="startTimer$.asObservable()"
-            [pause]="pauseTimer$.asObservable()"
-            [reset]="resetTimer$.asObservable()"
             [timeInSec]="initialTime">
           </app-count-down>
           <ng-template #onGameOver>

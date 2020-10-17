@@ -1,25 +1,21 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TimerService } from '@core/services/timer.service';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { interval, merge, Observable, of, Subject } from 'rxjs';
 import { mapTo, scan, switchMap, tap } from 'rxjs/operators';
+import { CountDownService } from './count-down.service';
 
 @Component({
   selector: 'app-count-down',
   templateUrl: './count-down.component.html',
-  styleUrls: ['./count-down.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  styleUrls: ['./count-down.component.scss']
 })
 export class CountDownComponent implements OnInit, AfterViewInit  {
   @Input() timeInSec: number;
-  @Input() start: Observable<void>;
-  @Input() pause: Observable<void>;
-  @Input() reset: Observable<void>;
   @Output() time = new EventEmitter<number>();
-
+  // TODO: Share when reach zero!
   clock$: Observable<number>;
 
   constructor(
-    private clockService: TimerService
+    private countDownSrv: CountDownService
   ) { }
 
   shareCurrentTime(time: number) {
@@ -27,15 +23,15 @@ export class CountDownComponent implements OnInit, AfterViewInit  {
   }
 
   ngOnInit() {
-    this.clockService.updateState(+this.timeInSec, 'seconds');
+    this.countDownSrv.updateState(+this.timeInSec, 'seconds');
   }
 
   ngAfterViewInit() {
-    const start$ = this.start.pipe(mapTo(true));
-    const pause$ = this.pause.pipe(mapTo(false));
-    const reset$ = this.reset.pipe(mapTo(null));
+    const start$ = this.countDownSrv.startAction$.pipe(mapTo(true));
+    const pause$ = this.countDownSrv.pauseAction$.pipe(mapTo(false));
+    const reset$ = this.countDownSrv.resetAction$.pipe(mapTo(null));
     const zero$ = new Subject();
-    const stateChange$ = this.clockService.action$.pipe(mapTo(null));
+    const stateChange$ = this.countDownSrv.timerAction$.pipe(mapTo(null));
 
     this.clock$ = merge(
       start$,
@@ -54,7 +50,7 @@ export class CountDownComponent implements OnInit, AfterViewInit  {
             return accummulated;
           }
           if (current === null || !accummulated)
-            return this.clockService.getTotalSeconds();
+            return this.countDownSrv.getTotalSeconds();
           return --accummulated;
         }),
         tap(num => {

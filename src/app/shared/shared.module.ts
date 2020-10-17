@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BodyCardComponent } from './components/body-card/body-card.component';
 import { CountDownComponent } from './components/count-down/count-down.component';
 import { SecondsToTimeFormat } from './pipes/seconds-to-time.format';
+import { CountDownService } from './components/count-down/count-down.service';
 
 @NgModule({
   declarations: [
@@ -12,12 +13,18 @@ import { SecondsToTimeFormat } from './pipes/seconds-to-time.format';
     SecondsToTimeFormat,
     CountDownComponent
   ],
-  imports: [CommonModule, ReactiveFormsModule, IonicModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    IonicModule
+  ],
+  providers: [CountDownService],
   exports: [
     ReactiveFormsModule,
     IonicModule,
     BodyCardComponent,
-    CountDownComponent
+    CountDownComponent,
+    CountDownService
   ]
 })
 export class SharedModule {}
