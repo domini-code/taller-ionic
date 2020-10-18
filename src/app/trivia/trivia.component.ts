@@ -7,7 +7,7 @@ import { Trivia } from '@shared/interfaces';
 
 interface Config {
   difficulty: string;
-  category: number;
+  category: any;
 }
 
 @Component({
@@ -23,12 +23,15 @@ export class TriviaComponent implements OnInit {
   set counter(value: number) {
     if (this.counter >= 4) {
       // 'No hay mas preguntas'
+      const { difficulty, category: [categoryId, categoryName]} = this.config;
       const state = {
         takenTime: this.takenTime,
         correctAnswers: this.goodAnswer,
-        category: this.config.category,
-        difficulty: this.config.difficulty,
+        difficulty,
+        categoryId,
+        categoryName
       };
+      console.log('SoyState', state);
       this.gameOver = true;
       this.router.navigate(['/result'], { state });
     } else {
@@ -65,8 +68,8 @@ export class TriviaComponent implements OnInit {
   }
 
   createTrivia() {
-    const { difficulty, category } = this.config;
-    this.triviaSrv.getTrivias(difficulty, category)
+    const { difficulty, category: [ categoryId ] } = this.config;
+    this.triviaSrv.getTrivias(difficulty, categoryId)
       .subscribe((trivia) => {
         this.trivia = trivia;
         this.selectedQuestion = trivia[0];

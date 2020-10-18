@@ -1,10 +1,9 @@
 import { TriviaCategory } from './../shared/interfaces/category.interface';
-import { Observable } from 'rxjs';
-import {   LocalStorageService } from './../core/services/localstorage.service';
-import { Component,  } from '@angular/core';
+import { Component  } from '@angular/core';
 import { FormBuilder,  FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TriviaService } from '@core/services/trivia.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-setup',
@@ -19,21 +18,21 @@ export class SetupComponent {
     private triviaService: TriviaService,
     private router: Router,
     private fb: FormBuilder,
-    private localStorageSvc: LocalStorageService
   ) {
     this.initForm();
   }
 
   goToTrivia(): void {
     const config = this.setupForm.value;
+    console.log(config);
     this.router.navigate(['/trivia'], {
-      state: {
-        config
-      }
+       state: {
+         config
+       }
     });
   }
 
-  private initForm(): void {
+   private initForm(): void {
     this.setupForm = this.fb.group({
       category: ['', [Validators.required]],
       difficulty: ['', [Validators.required]],
