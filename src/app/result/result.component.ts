@@ -9,12 +9,16 @@ import { Router } from '@angular/router';
 export class ResultComponent implements OnInit {
 
   data: any;
+  loading = true;
+
   constructor(
     private router: Router,
   ) {
     this.data = this.router.getCurrentNavigation().extras.state;
     if (!this.data) {
       this.router.navigate(['/']);
+    } else {
+      this.loading = false;
     }
   }
   

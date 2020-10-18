@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./setup/setup.module').then(m => m.SetupModule)
+    loadChildren: () => import('./setup/setup.module').then(m => m.SetupModule),
   },
   {
     path: 'trivia',

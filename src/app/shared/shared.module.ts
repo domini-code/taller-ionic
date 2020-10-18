@@ -4,14 +4,18 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BodyCardComponent } from './components/body-card/body-card.component';
 import { CountDownComponent } from './components/count-down/count-down.component';
-import { SecondsToTimeFormat } from './pipes/seconds-to-time.format';
 import { CountDownService } from './components/count-down/count-down.service';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { SecondsToTimeFormat } from './pipes/seconds-to-time.format';
 
 @NgModule({
   declarations: [
     BodyCardComponent,
     SecondsToTimeFormat,
-    CountDownComponent
+    CountDownComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +28,9 @@ import { CountDownService } from './components/count-down/count-down.service';
     IonicModule,
     BodyCardComponent,
     CountDownComponent,
-    CountDownService
+    CountDownService,
+    HeaderComponent,
+    FooterComponent
   ]
 })
 export class SharedModule {}
