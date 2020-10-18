@@ -3,7 +3,6 @@ import { Component  } from '@angular/core';
 import { FormBuilder,  FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TriviaService } from '@core/services/trivia.service';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-setup',
@@ -23,13 +22,17 @@ export class SetupComponent {
   }
 
   goToTrivia(): void {
-    const config = this.setupForm.value;
-    console.log(config);
+    const { difficulty, category: categoryId } = this.setupForm.value;
+    const category = this.triviaService.categories.find(x => x.id === categoryId);
     this.router.navigate(['/trivia'], {
-       state: {
-         config
-       }
+      state: {
+        dataState: {
+          difficulty,
+          category
+        }
+      }
     });
+    this.setupForm.reset();
   }
 
    private initForm(): void {

@@ -1,14 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TriviaService } from '@core/services/trivia.service';
-import { CountDownService } from '@shared/components/count-down/count-down.service';
 import shuffleArray from '@shared/helpers/shuffle-array.helper';
 import { Trivia } from '@shared/interfaces';
+import { IDataState } from '@shared/interfaces';
 
-interface Config {
-  difficulty: string;
-  category: any;
-}
 
 @Component({
   selector: 'app-trivia',
@@ -23,15 +19,10 @@ export class TriviaComponent implements OnInit {
   set counter(value: number) {
     if (this.counter >= 4) {
       // 'No hay mas preguntas'
-      const { difficulty, category: [categoryId, categoryName]} = this.config;
       const state = {
-        takenTime: this.takenTime,
-        correctAnswers: this.goodAnswer,
-        difficulty,
-        categoryId,
-        categoryName
+        correctAnswers: this.correctAnswers,
+        ...this.dataState
       };
-      console.log('SoyState', state);
       this.gameOver = true;
       this.router.navigate(['/result'], { state });
     } else {
@@ -39,62 +30,45 @@ export class TriviaComponent implements OnInit {
     }
   }
 
-  initialTime = 10;
-  currentTime: number;
-  takenTime = 0;
-  config: Config;
+  dataState: IDataState;
   trivia: Trivia[] = [];
-  goodAnswer = 0;
+  correctAnswers = 0;
   loading = true;
   gameOver = false;
   selectedQuestion: Trivia;
 
   constructor(
     private router: Router,
-    private triviaSrv: TriviaService,
-    private countDownSrv: CountDownService
+    private triviaSrv: TriviaService
   ) {
-    this.loading = true;
-    this.config = this.router.getCurrentNavigation()
-      .extras.state?.config as Config;
-    if (!this.config) {
+    this.dataState = this.router.getCurrentNavigation().extras.state?.dataState as IDataState;
+    if (!this.dataState) {
       this.router.navigate(['/']);
     }
     this.createTrivia();
   }
 
-  ngOnInit(): void {
-    this.countDownSrv.startTimer();
-  }
+  ngOnInit(): void { }
 
   createTrivia() {
-    const { difficulty, category: [ categoryId ] } = this.config;
-    this.triviaSrv.getTrivias(difficulty, categoryId)
+    const { difficulty, category: {id} } = this.dataState;
+    this.triviaSrv.getTrivias(difficulty, id)
       .subscribe((trivia) => {
         this.trivia = trivia;
         this.selectedQuestion = trivia[0];
         this.setupRandomQuestions();
-        this.countDownSrv.startTimer();
         this.loading = false;
       });
   }
 
-  getTime(event: number) {
-    this.currentTime = event;
-  }
-
   selectedAnswer(answer: string) {
-    this.countDownSrv.pauseTimer();
     if (!this.gameOver) {
       if (answer === this.selectedQuestion.correct_answer) {
-        this.goodAnswer++;
+        this.correctAnswers++;
       } else {
         // Ha fallado en la respuesta...
       }
-      this.takenTime += this.initialTime - this.currentTime;
-      this.countDownSrv.resetTimer();
       this.nextQuestion();
-      this.countDownSrv.startTimer();
     }
   }
 

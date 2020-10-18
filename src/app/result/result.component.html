@@ -1,27 +1,25 @@
 <app-header></app-header>
 <ion-content class="ion-text-center">
-  <app-body-card title="¡Has terminado!" *ngIf="!loading">
-    <ion-text [color]="(data?.correctAnswers > 3) ? 'success' : 'danger'">
-      <h1>Got {{data?.correctAnswers}} of 5</h1>
+  <app-body-card title="GAME OVER" *ngIf="!loading">
+    <ion-text [color]="(dataState?.correctAnswers > 3) ? 'success' : 'danger'">
+      <h1>Got {{dataState?.correctAnswers}} of 5</h1>
     </ion-text>
     <ion-list>
       <ion-text color="primary"><h4>Results</h4></ion-text>
-    <!-- <ion-item-divider color="secondary">
-    </ion-item-divider> -->
     <ion-item>
       <ion-label>Correct Answers:</ion-label>
       <ion-label slot="end" class="ion-text-wrap">
-        <strong>{{data?.correctAnswers}}</strong></ion-label>
+        <strong>{{dataState?.correctAnswers}}</strong></ion-label>
     </ion-item>
     <ion-item>
       <ion-label>Category:</ion-label>
       <ion-label slot="end" class="ion-text-wrap">
-        <strong>{{data?.categoryName}}</strong></ion-label>
+        <strong>{{dataState?.category.name}}</strong></ion-label>
     </ion-item>
     <ion-item>
       <ion-label>Difficulty:</ion-label>
       <ion-label slot="end" class="ion-text-wrap">
-        <strong>{{data?.difficulty}}</strong></ion-label>
+        <strong>{{dataState?.difficulty | titlecase}}</strong></ion-label>
     </ion-item>
   </ion-list>
     <p>

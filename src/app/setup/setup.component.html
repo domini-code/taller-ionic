@@ -4,8 +4,8 @@
     <form [formGroup]="setupForm" (ngSubmit)="goToTrivia()">
       <ion-item>
         <ion-label>Choose Categories</ion-label>
-        <ion-select #categoryName interface="popover" formControlName="category">
-          <ion-select-option [value]="[category.id, category.name]" *ngFor="let category of categories$ | async">
+        <ion-select interface="popover" formControlName="category">
+          <ion-select-option [value]="category.id" *ngFor="let category of categories$ | async">
             {{ category.name }}
           </ion-select-option>
         </ion-select>
@@ -23,7 +23,7 @@
       <ion-button type="submit" expand="full" [disabled]="!setupForm.valid">Start Trivia</ion-button>
   
       <ion-item>
-        <ion-label> Once you start trivia, you'll have 10s per question.</ion-label>
+        <ion-label> Gook luck and enjoy with the trivia!</ion-label>
       </ion-item>
     </form>
   </app-body-card>

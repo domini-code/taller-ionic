@@ -1,32 +1,17 @@
 <app-header></app-header>
 <ion-content>
-  <app-body-card *ngIf="!loading; else onLoading" title="PREGUNTA {{counter + 1}} / 5">
+  <app-body-card *ngIf="!loading; else onLoading" title="TRIVIA {{counter + 1}} / 5">
     <ion-list>
       <ion-item>
         <ion-label>Difficulty:</ion-label>
         <ion-label slot="end">
-          <strong>{{ config.difficulty | titlecase }}</strong>
+          <strong>{{ dataState.difficulty | titlecase }}</strong>
         </ion-label>
       </ion-item>
       <ion-item>
         <ion-label>Category:</ion-label>
         <ion-label slot="end" class="ion-text-wrap">
-          <strong>{{ trivia[0]?.category }}</strong></ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label>Remain time:</ion-label>
-        <ion-label slot="end">
-          <strong>
-            <app-count-down
-              *ngIf="!gameOver; else onGameOver"
-              (time)="getTime($event)"
-              [timeInSec]="initialTime">
-            </app-count-down>
-            <ng-template #onGameOver>
-              GAME OVER
-            </ng-template>
-          </strong>
-        </ion-label>
+          <strong>{{ dataState.category.name }}</strong></ion-label>
       </ion-item>
     </ion-list>
     <!-- sub-card -->

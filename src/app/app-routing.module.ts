@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
@@ -15,10 +15,6 @@ const routes: Routes = [
     loadChildren: () => import('./result/result.module').then(m => m.ResultModule)
   },
   {
-    path: 'reset',
-    loadChildren: () => import('./reset/reset.module').then(m => m.ResetModule)
-  },
-  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full'
@@ -27,7 +23,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]
 })

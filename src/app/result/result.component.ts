@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { IDataState } from '@shared/interfaces';
 
 @Component({
   selector: 'app-result',
@@ -8,21 +9,20 @@ import { Router } from '@angular/router';
 })
 export class ResultComponent implements OnInit {
 
-  data: any;
+  dataState: IDataState;
   loading = true;
 
   constructor(
     private router: Router,
-  ) {
-    this.data = this.router.getCurrentNavigation().extras.state;
-    if (!this.data) {
+  ) { }
+  
+  ngOnInit(): void {
+    this.dataState = this.router.getCurrentNavigation().extras.state as IDataState;
+    if (!this.dataState) {
       this.router.navigate(['/']);
     } else {
       this.loading = false;
     }
-  }
-  
-  ngOnInit(): void {
   }
 
   goToSetup() {
