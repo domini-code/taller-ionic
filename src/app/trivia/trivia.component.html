@@ -1,6 +1,9 @@
 <app-header></app-header>
 <ion-content>
-  <app-body-card *ngIf="!loading; else onLoading" title="TRIVIA {{counter + 1}} / 5">
+  <app-body-card
+    *ngIf="!loading; else onLoading"
+    title="TRIVIA {{ counter + 1 }} / 5"
+  >
     <ion-list>
       <ion-item>
         <ion-label>Difficulty:</ion-label>
@@ -11,17 +14,32 @@
       <ion-item>
         <ion-label>Category:</ion-label>
         <ion-label slot="end" class="ion-text-wrap">
-          <strong>{{ dataState.category.name }}</strong></ion-label>
+          <strong>{{ dataState.category.name }}</strong></ion-label
+        >
       </ion-item>
     </ion-list>
     <!-- sub-card -->
     <ion-card class="sub-card">
       <ion-card-header>
-        <ion-card-title class="ion-text-center ion-text-wrap" [innerHTML]="selectedQuestion?.question"></ion-card-title>
+        <ion-card-title
+          class="ion-text-center ion-text-wrap"
+          [innerHTML]="selectedQuestion?.question"
+        ></ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <section *ngFor="let answer of selectedQuestion?.randomAnswers; index as i">
-          <ion-button (click)="selectedAnswer(answer)" color="secondary" expand="block" [innerHTML]="answer"></ion-button>
+        <section
+          *ngFor="
+            let answer of selectedQuestion?.randomAnswers;
+            index as i;
+            trackBy: trackByIndex
+          "
+        >
+          <ion-button
+            (click)="selectedAnswer(answer)"
+            color="secondary"
+            expand="block"
+            [innerHTML]="answer"
+          ></ion-button>
         </section>
       </ion-card-content>
     </ion-card>

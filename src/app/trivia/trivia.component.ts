@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,  } from '@angular/core';
 import { Router } from '@angular/router';
 import { TriviaService } from '@core/services/trivia.service';
 import shuffleArray from '@shared/helpers/shuffle-array.helper';
@@ -11,7 +11,15 @@ import { IDataState } from '@shared/interfaces';
   templateUrl: './trivia.component.html',
   styleUrls: ['./trivia.component.scss'],
 })
-export class TriviaComponent implements OnInit {
+export class TriviaComponent {
+
+  dataState: IDataState;
+  trivia: Trivia[] = [];
+  correctAnswers = 0;
+  loading = true;
+  gameOver = false;
+  selectedQuestion: Trivia;
+
   private _counter = 0;
   get counter() {
     return this._counter;
@@ -30,13 +38,6 @@ export class TriviaComponent implements OnInit {
     }
   }
 
-  dataState: IDataState;
-  trivia: Trivia[] = [];
-  correctAnswers = 0;
-  loading = true;
-  gameOver = false;
-  selectedQuestion: Trivia;
-
   constructor(
     private router: Router,
     private triviaSrv: TriviaService
@@ -48,7 +49,6 @@ export class TriviaComponent implements OnInit {
     this.createTrivia();
   }
 
-  ngOnInit(): void { }
 
   createTrivia() {
     const { difficulty, category: {id} } = this.dataState;
@@ -65,9 +65,7 @@ export class TriviaComponent implements OnInit {
     if (!this.gameOver) {
       if (answer === this.selectedQuestion.correct_answer) {
         this.correctAnswers++;
-      } else {
-        // Ha fallado en la respuesta...
-      }
+      } 
       this.nextQuestion();
     }
   }
@@ -85,4 +83,8 @@ export class TriviaComponent implements OnInit {
       ...incorrect_answers,
     ]);
   }
+
+  trackByIndex(index, item){
+    return item.name; 
+ }
 }

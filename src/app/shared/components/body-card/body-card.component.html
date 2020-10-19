@@ -1,7 +1,11 @@
 <ion-card>
   <ion-card-header>
-    <ion-card-title class="ion-text-center" *ngIf="title">{{ title.toUpperCase() }}</ion-card-title>
-    <ion-card-subtitle class="ion-text-center" *ngIf="subtitle">{{ subtitle.toUpperCase() }}</ion-card-subtitle>
+    <ion-card-title class="ion-text-center" *ngIf="title">{{
+      title | uppercase
+    }}</ion-card-title>
+    <ion-card-subtitle class="ion-text-center" *ngIf="subtitle">{{
+      subtitle | uppercase
+    }}</ion-card-subtitle>
   </ion-card-header>
   <ion-card-content>
     <ng-content></ng-content>
